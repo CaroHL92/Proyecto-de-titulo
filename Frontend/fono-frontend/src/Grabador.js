@@ -21,7 +21,7 @@ function Grabador(props) {
   useEffect(() => {
     if (nivelSeleccionado) {
       console.log("Nivel seleccionado:", nivelSeleccionado);
-      axios.get('http://localhost:8000/api/palabras/?nivel=${nivelSeleccionado}')
+      axios.get(`http://localhost:8000/api/palabras/?nivel=${nivelSeleccionado}`)
         .then(res => {
           setPalabras(res.data);
           setPalabraSeleccionada("");
