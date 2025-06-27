@@ -1,12 +1,30 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import axios from 'axios';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Grabador from './Grabador';
-import ReporteEstudiante from './ReporteEstudiante';
 import { NavLink } from 'react-router-dom';
+import Registro from './Registro';
 import Login from './Login';
+import ReporteUsuario from './ReporteUsuario';
+import { Navigate } from 'react-router-dom';
+
 
 function App() {
   const [usuario, setUsuario] = useState(null);
+    useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token && !usuario) {
+      axios.get('http://127.0.0.1:8000/api/users/me/', {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(res => setUsuario(res.data))
+      .catch(() => {
+        localStorage.removeItem('token');
+        setUsuario(null);
+      });
+    }
+  }, [usuario]);
+
 
   const cerrarSesion = () => {
     localStorage.removeItem('token');
@@ -49,7 +67,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Inicio usuario={usuario} />} />
           <Route path="/ejercicios" element={<Grabador usuario={usuario} />} />
-          <Route path="/reporte" element={<ReporteEstudiante usuario={usuario} />} />
+          <Route path="/reporte" element={usuario ? <ReporteUsuario usuario={usuario} /> : <Navigate to="/login" />} />
         </Routes>
       </div>
     </Router>

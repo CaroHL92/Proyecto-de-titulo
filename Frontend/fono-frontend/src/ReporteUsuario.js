@@ -1,18 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Navigate } from 'react-router-dom';
 
-function ReporteEstudiante() {
+function ReporteUsuario({ usuario }) {
   const [reporte, setReporte] = useState([]);
 
   // 🔁 PASO 4: Llamar a la API al cargar
   useEffect(() => {
-    axios.get("http://127.0.0.1:8000/api/reporte/1/") // Reemplaza 1 con el ID del estudiante
-      .then(res => {
-        console.log("📊 Reporte recibido:", res.data);
-        setReporte(res.data);
-      })
-      .catch(err => console.error("Error al obtener el reporte:", err));
-  }, []);
+    if (!usuario) return;
+
+    const token = localStorage.getItem('token');
+    axios.get(`http://127.0.0.1:8000/api/reporte/${usuario.id}/`, {
+      headers: { Authorization: `Bearer ${token}` }
+    })
+    .then(res => {
+      console.log("📊 Reporte recibido:", res.data);
+      setReporte(res.data);
+    })
+    .catch(err => console.error("Error al obtener el reporte:", err));
+  }, [usuario]);
+
+  
 
   // 📄 PASO 5: Mostrar la tabla
   return (
@@ -48,4 +56,4 @@ function ReporteEstudiante() {
   );
 }
 
-export default ReporteEstudiante;
+export default ReporteUsuario;
