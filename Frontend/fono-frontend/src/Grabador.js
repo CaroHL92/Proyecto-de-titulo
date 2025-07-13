@@ -30,6 +30,11 @@ function Grabador(props) {
     }
   }, [nivelSeleccionado]);
 
+  const reproducirPalabra = (texto) => {
+    const utterance = new SpeechSynthesisUtterance(texto);
+    utterance.lang = 'es-CL';
+    window.speechSynthesis.speak(utterance);
+  };
 
   const iniciarGrabacion = () => {
     setStartTime(Date.now());
@@ -152,10 +157,17 @@ function Grabador(props) {
         backgroundColor="#eee"
       />
       <div style={{ marginTop: '10px' }}>
+        <button onClick={() => {
+          const palabra = palabras.find(p => p.id === palabraSeleccionada);
+          if (palabra) {
+            reproducirPalabra(palabra.texto);
+          }
+        }}>
+        🔊 Escuchar palabra modelo</button>
         <button onClick={iniciarGrabacion}>🎙️ Grabar</button>
         <button onClick={detenerGrabacion}>⏹️ Detener</button>
-        <button onClick={handleEnviar} disabled={!audioBlob}>📤 Enviar</button>
         <button onClick={reproducirAudio} disabled={!audioBlob}>▶️ Escuchar</button>
+        <button onClick={handleEnviar} disabled={!audioBlob}>📤 Enviar</button>
       </div>
     </div>
   );

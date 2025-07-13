@@ -10,6 +10,6 @@ urlpatterns = [
     path('api/', include('ejercicios.urls')),
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
-    path('registrar/', registrar_usuario),
+    path('api/registrar/', registrar_usuario, name='registrar'),
     path('api/reporte/<int:usuario_id>/', reporte_por_usuario),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.utils.timezone import now, timedelta
 from rest_framework.permissions import IsAuthenticated
-from django.contrib.auth.models import User
+from fonoapp.models import User
 from rest_framework import status
 
 

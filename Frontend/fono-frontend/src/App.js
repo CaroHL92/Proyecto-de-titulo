@@ -10,7 +10,20 @@ import { Navigate } from 'react-router-dom';
 
 
 function App() {
-  const [usuario, setUsuario] = useState(null);
+  const [usuario, setUsuario] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const [mostrarRegistro, setMostrarRegistro] = useState(false);
+  const [tipoUsuario, setTipoUsuario] = useState(null);
+
+  useEffect(() => {
+    const tipo = localStorage.getItem('tipo_usuario');
+    if (tipo) {
+      setTipoUsuario(tipo);
+    }
+  }, []);
+
+
     useEffect(() => {
     const token = localStorage.getItem('token');
     if (token && !usuario) {
@@ -32,13 +45,37 @@ function App() {
   };
 
   if (!usuario) {
-    return <Login onLoginSuccess={setUsuario} />;
-  }
+    return mostrarRegistro ? (
+    <Registro
+      onLoginSuccess={setUsuario}
+      username={username}
+      setUsername={setUsername}
+      password={password}
+      setPassword={setPassword}
+      volver={() => setMostrarRegistro(false)}
+    />
+  ) : (
+    <div style={{ padding: '20px' }}>
+      <Login
+        onLoginSuccess={setUsuario}
+        username={username}
+        setUsername={setUsername}
+        password={password}
+        setPassword={setPassword}
+        onShowRegister={() => {
+          setUsername('');
+          setPassword('');
+          setMostrarRegistro(true);
+        }}
+      />
+    </div>
+  );
+}
 
   return (
     <Router>
       <div className="App">
-        {/* 🧠 Encabezado con usuario y logout */}
+        {/* Encabezado con usuario y logout */}
         <header style={{
           display: 'flex',
           justifyContent: 'space-between',

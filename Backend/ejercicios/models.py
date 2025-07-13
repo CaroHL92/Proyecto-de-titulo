@@ -1,5 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
+
 
 class Nivel(models.Model):
     nombre = models.CharField(max_length=100)
@@ -15,7 +16,7 @@ class Palabra(models.Model):
         return self.texto
 
 class Grabacion(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE, related_name='grabaciones')
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='grabaciones')
     palabra = models.ForeignKey(Palabra, on_delete=models.CASCADE)
     archivo_audio = models.FileField(upload_to='grabaciones/')
     fecha = models.DateTimeField(auto_now_add=True)
@@ -23,7 +24,7 @@ class Grabacion(models.Model):
     duracion = models.FloatField()  # segundos
 
 class ReporteSemanal(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    usuario = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     semana = models.DateField()
     total_repeticiones = models.IntegerField()
     tiempo_total = models.FloatField()

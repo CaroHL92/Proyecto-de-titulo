@@ -2,9 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './Login.css';
 
-function Login({ onLoginSuccess }) {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+function Login({ username, setUsername, password, setPassword, onLoginSuccess, onShowRegister }) {
   const [mostrarRegistro, setMostrarRegistro] = useState(false);
 
   const iniciarSesion = () => {
@@ -15,7 +13,7 @@ function Login({ onLoginSuccess }) {
         axios.get('http://127.0.0.1:8000/api/users/me/', {
           headers: { Authorization: `Bearer ${token}` }
         }).then(res => {
-          onLoginSuccess(res.data); // envia usuario al padre
+          onLoginSuccess(res.data); 
         });
       })
       .catch(err => {
@@ -63,7 +61,7 @@ function Login({ onLoginSuccess }) {
         <>
           <button onClick={iniciarSesion}>Ingresar</button>
           <p>¿No tienes cuenta? <button onClick={() => setMostrarRegistro(true)}>Registrarse</button></p>
-        </>
+        </> 
       )}
     </div>
   );
